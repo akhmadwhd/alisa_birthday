@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun Alisa Sarmadaniah Lasuwu - 24 Tahun</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .page-sections {
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+        }
+
+        .section {
+            position: relative;
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            scroll-snap-align: start;
+            opacity: 0.6;
+            transform: scale(0.98);
+            transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
+        }
+
+        .section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.75));
+            pointer-events: none;
+        }
+
+        .section.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: none;
+        }
+
+        .section-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 860px;
+            text-align: center;
+        }
+
+        .section h1,
+        .section h2,
+        .section p {
+            margin: 0 auto;
+        }
+
+        .section h1 {
+            font-size: clamp(2.2em, 5vw, 4em);
+            margin-bottom: 14px;
+            line-height: 1.05;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5em, 3.5vw, 2.5em);
+            margin-bottom: 18px;
+        }
+
+        .section p {
+            font-size: clamp(1em, 1.8vw, 1.35em);
+            line-height: 1.75;
+            max-width: 720px;
+        }
+
+        .section p strong {
+            color: #ffd8e8;
+        }
+
+        .decorative {
+            font-size: clamp(2em, 4vw, 3em);
+            margin: 20px 0;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Scroll Content Styles */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 2vw, 20px);
+            padding: clamp(15px, 3vw, 20px);
+            background: white;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 30px);
+            font-size: clamp(0.85em, 1.5vw, 1em);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .slide-counter {
+            font-size: clamp(0.9em, 1.5vw, 1.2em);
+            color: #666;
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            padding: clamp(15px, 3vw, 20px);
+            color: #999;
+            font-style: italic;
+            background: #f5f5f5;
+            font-size: clamp(0.85em, 1.5vw, 1em);
+        }
+
+        .pop-text.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .pop-text.character-by-character {
+            display: inline-block;
+        }
+
+        .timeline-container {
+            margin-top: clamp(40px, 10vw, 100px);
+        }
+
+        .timeline-title {
+            font-size: clamp(1.5em, 4vw, 2.5em);
+            color: #d63384;
+            margin-bottom: clamp(30px, 5vw, 50px);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            margin-bottom: clamp(40px, 8vw, 60px);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            text-align: right;
+            padding-right: 52%;
+        }
+
+        .timeline-item:nth-child(even) {
+            text-align: left;
+            padding-left: 52%;
+        }
+
+        .timeline-content {
+            background: linear-gradient(135deg, #f0e6ff 0%, #e6ccff 100%);
+            padding: clamp(15px, 3vw, 25px);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid #d63384;
+            border-radius: 50%;
+            left: 50%;
+            top: 20px;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-photo {
+            width: 100%;
+            max-width: 300px;
+            height: 220px;
+            border-radius: 10px;
+            margin: 15px auto 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .timeline-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .timeline-year {
+            font-size: clamp(1.2em, 2vw, 1.5em);
+            color: #d63384;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-description {
+            font-size: clamp(0.95em, 1.5vw, 1.1em);
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(10px, 2vw, 20px);
+            padding: clamp(15px, 3vw, 20px);
+            background: white;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 30px);
+            font-size: clamp(0.85em, 1.5vw, 1em);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .slide-counter {
+            font-size: clamp(0.9em, 1.5vw, 1.2em);
+            color: #666;
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            padding: clamp(15px, 3vw, 20px);
+            color: #999;
+            font-style: italic;
+            background: #f5f5f5;
+            font-size: clamp(0.85em, 1.5vw, 1em);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .page-sections {
+                max-height: none;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                text-align: left;
+                padding-left: 70px;
+            }
+
+            .timeline-item::before {
+                left: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-sections {
+                max-height: none;
+            }
+
+            .section {
+                padding: 30px 20px;
+                min-height: calc(100vh - 120px);
+            }
+
+            .timeline::before {
+                left: 25px;
+            }
+
+            .timeline-item {
+                margin-bottom: clamp(30px, 6vw, 50px);
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                text-align: left;
+                padding-left: 65px;
+            }
+
+            .timeline-item::before {
+                left: 25px;
+                width: 18px;
+                height: 18px;
+                border-width: 3px;
+            }
+
+            .timeline-content {
+                padding: clamp(12px, 2.5vw, 20px);
+            }
+
+            .timeline-photo {
+                max-width: 100%;
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+
+            body {
+                padding: 5px;
+            }
+
+            .section {
+                padding: 30px 20px;
+                min-height: calc(100vh - 120px);
+            }
+
+            .section h1 {
+                font-size: clamp(1.8em, 6vw, 2.8em);
+            }
+
+            .section h2 {
+                font-size: clamp(1.3em, 4vw, 2em);
+            }
+
+            .section p {
+                font-size: clamp(0.95em, 2.2vw, 1.1em);
+            }
+
+            .nav-buttons {
+                gap: clamp(8px, 2vw, 15px);
+                padding: clamp(12px, 2vw, 15px);
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .slide-counter {
+                display: none;
+            }
+
+            .scroll-hint {
+                padding: clamp(10px, 2vw, 15px);
+                font-size: clamp(0.75em, 1.3vw, 0.85em);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-sections" id="pageSections">
+            <section class="section active" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.08.20.jpeg');" data-index="1">
+                <div class="section-inner">
+                    <div class="decorative">💌</div>
+                    <h1>Ini adalah bentuk apresiasi dari saya untukmu</h1>
+                    <h2>- whd</h2>
+                    <p>Alisa, kamu lahir di Makassar pada 16 Juni 2002 sebagai anak kedua dari empat bersaudara. Aku ingin menggunakan halaman ini untuk menghargai perjalanan hidupmu dan arti yang kamu bawa.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.08.21.jpeg');" data-index="2">
+                <div class="section-inner">
+                    <div class="decorative">🧒📸</div>
+                    <h2>Dokumentasi Awal Hidupmu</h2>
+                    <p>Aku belum mengenalmu di awal hidupmu, tapi aku punya beberapa dokumentasi dari perjalananmu sebelum bertemu denganku: dari masa bayi, SD, SMP, SMA, hingga kuliah. Setiap bab adalah jejak yang berharga.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.08.23.jpeg');" data-index="3">
+                <div class="section-inner">
+                    <div class="decorative">⏳✨</div>
+                    <h2>Memasuki Hidupmu di Usia 23</h2>
+                    <p>Aku masuk ke hidupmu ketika usiamu 23 tahun, dan sekarang kamu sudah memasuki 24. Sebentar lagi kamu akan masuk 25 tahun di tahun depan, dan aku berharap bab berikutnya dari buku ini bisa dilanjutkan bersama.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.08.24.jpeg');" data-index="4">
+                <div class="section-inner">
+                    <div class="decorative">📲🌹</div>
+                    <h2>Kilas Balik Pertama</h2>
+                    <p>Saat pertama tahu bahwa Alisa ada di dunia ini adalah Januari 2025. Waktu itu dia sedang dalam hubungan, jadi aku belum bisa mendekat. Aku berpetualang melalui temanku Emo untuk menemukan celah dan kesempatan.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.08.25.jpeg');" data-index="5">
+                <div class="section-inner">
+                    <div class="decorative">🔍💬</div>
+                    <h2>Permulaan Komunikasi</h2>
+                    <p>Aku melihat bahwa Emo dan Alisa saling follow, lalu aku minta tolong untuk bertanya apakah dia sedang punya cowok atau tidak. Singkat cerita ternyata dia jomblo, dan komunikasi kembali terbuka.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.13.08.jpeg');" data-index="6">
+                <div class="section-inner">
+                    <div class="decorative">🚗🌆</div>
+                    <h2>Pertemuan Pertama</h2>
+                    <p>Kisah awal pertemuan kita masih terekam jelas: dia membagikan lokasi rumah lewat DM Instagram. Aku datang dengan mobil, sempat lewat, membalik, lalu berjalan sedikit sampai melihat sosokmu berpakaian merah dan berjilbab pink, dengan ibu di belakangmu.</p>
+                </div>
+            </section>
+            <section class="section" style="background-image: url('Foto/WhatsApp Image 2026-06-16 at 18.13.11 (1).jpeg');" data-index="7">
+                <div class="section-inner">
+                    <div class="decorative">💖📖</div>
+                    <h1>Chapter Pertama</h1>
+                    <p>Ini adalah edisi pertama, sebuah intro dalam buku perjalanan kita. Semoga cerita ini menjadi awal yang indah untuk bab-bab selanjutnya, selamanya bersama dan penuh penghargaan.</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="nav-buttons">
+            <button id="prevButton">← Sebelumnya</button>
+            <span class="slide-counter"><span id="current-slide">1</span> / 7</span>
+            <button id="nextButton">Selanjutnya →</button>
+        </div>
+
+        <div class="scroll-hint">
+            💡 Gulir untuk membaca setiap bagian, atau gunakan tombol untuk berpindah dengan transisi halus.
+        </div>
+    </div>
+
+    <script>
+        const sections = Array.from(document.querySelectorAll('.section'));
+        const pageSections = document.getElementById('pageSections');
+        const currentSlideEl = document.getElementById('current-slide');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        let activeIndex = 0;
+
+        function updateActiveSection(index) {
+            activeIndex = Math.max(0, Math.min(sections.length - 1, index));
+            sections.forEach((section, idx) => {
+                section.classList.toggle('active', idx === activeIndex);
+            });
+            currentSlideEl.textContent = activeIndex + 1;
+        }
+
+        function scrollToSection(index) {
+            activeIndex = Math.max(0, Math.min(sections.length - 1, index));
+            sections[activeIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        prevButton.addEventListener('click', () => scrollToSection(activeIndex - 1));
+        nextButton.addEventListener('click', () => scrollToSection(activeIndex + 1));
+
+        pageSections.addEventListener('scroll', () => {
+            const scrollPosition = pageSections.scrollTop + pageSections.clientHeight / 3;
+            const newActiveIndex = sections.findIndex(section => section.offsetTop + section.clientHeight > scrollPosition);
+            if (newActiveIndex !== -1) {
+                updateActiveSection(newActiveIndex);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                scrollToSection(activeIndex + 1);
+            }
+            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                scrollToSection(activeIndex - 1);
+            }
+        });
+
+        updateActiveSection(0);
+    </script>
+</body>
+</html>
